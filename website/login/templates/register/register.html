@@ -1,0 +1,12 @@
+{% extends 'register/base.html' %}
+{% block title %}Register page{% endblock %}
+{% block content %}
+    <h1>Register !</h1>
+    <form action="/login/register/" method="post">
+        {% csrf_token %} <!--Cross Site Reference Token, Used to validate forms. Mandatory-->
+        {{form.as_p}}
+        <input type="submit" value="Register">
+    </form>
+
+
+{% endblock%}

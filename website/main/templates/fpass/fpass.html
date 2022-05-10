@@ -1,0 +1,36 @@
+{% extends 'fpass/base.html' %}
+{% block Heading%}
+{% endblock %}
+{% block title %}Home page{% endblock %}
+{% block content %}
+<h1>Password Mangerialsness page !</h1>
+
+<h2>Hello, {{user.username}}</h2>
+
+<style>
+.myDiv {
+  border: 1px outset black;
+  background-color: white;
+  text-align: left;
+}
+</style>
+
+{% for data in Creds %}
+<div class = "myDiv" style="width:50%">
+  <a href="update/{{ data.id }}">{{ data.id }}</a>. Username: {{data.Name}}
+    <p style="padding-left: 15px">Password: {{data.Password}}</p>
+    <form action="delete/{{ data.id }}">
+    <button class="btn btn-primary btn-sm" type="submit">Delete</button>
+    </form>
+</div>
+{% endfor %}
+<!--For this part, make another style that will make it stick to the right of the screen for register. This is for adding new passwords-->
+<form method="post">
+    {% csrf_token %}
+    <p>Username:</p>
+    <td><input type="text" size=25 name="username"></p>
+    <p>Password:</p>
+    <p><input type="text" size=25 name="password"></p>
+    <button class="btn btn-primary btn-sm" type="submit" value="fcreate">Create File</button>
+</form>
+{% endblock content%}
