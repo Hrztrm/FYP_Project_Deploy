@@ -5,6 +5,12 @@ from django.contrib.auth import login, authenticate
 from django.contrib.auth.decorators import login_required
 import json
 from pathlib import Path
+from rest_framework.authentication import SessionAuthentication, BasicAuthentication
+from rest_framework.response import Response
+from rest_framework import views, permissions
+from rest_framework.decorators import *
+from . import serializers
+from rest_framework.permissions import AllowAny, IsAuthenticated
 
 # Create your views here.
 def home(response): #Response can be changed to other names, it refers a response/request from user
@@ -91,10 +97,29 @@ def delete(request, id):
         json.dump(new_data,f)
     return redirect('/pass')
 
-def api_home(request):
-    path = Path("main/Pass_Files/" + "Ikmal" + ".json")
+#Function based untuk dptkan info for the username and password of the user
+#Look into HTTPS for Heroku for better seucirt
+@api_view(['POST'])
+@authentication_classes([SessionAuthentication, BasicAuthentication])
+@permission_classes([AllowAny])
+def login_api(request, format=None):
+    serializer = serializers.LoginSerializer(data=request.data, context={'request': request })
+    serializer.is_valid(raise_exception=True)
+    user = serializer.validated_data['user']
+    path = Path("main/Pass_Files/" + user.username + ".json")
     with open(path, 'r+') as f:
         data = json.load(f)
-    
-    print("Data has been sent to user")
-    return JsonResponse(data)
+    return Response(data)
+
+#Class based api, imma using funciton based for easier doing
+#class LoginView(views.APIView):
+#    # This view should be accessible also for unauthenticated users.
+#    permission_classes = (permissions.AllowAny,)
+#
+#    def post(self, request, format=None):
+#        serializer = serializers.LoginSerializer(data=self.request.data,
+#            context={ 'request': self.request })
+#        serializer.is_valid(raise_exception=True)
+#        user = serializer.validated_data['user']
+#        login(request, user)
+#        return Response("Pawgs")
