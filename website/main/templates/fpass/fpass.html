@@ -13,24 +13,38 @@
   background-color: white;
   text-align: left;
 }
+.buttons {
+  display: inline-block;
+  margin: 5px;
+}
 </style>
 
 {% for data in Creds %}
 <div class = "myDiv" style="width:50%">
-  <a href="update/{{ data.id }}">{{ data.id }}</a>. Username: {{data.Name}}
-    <p style="padding-left: 15px">Password: {{data.Password}}</p>
-    <form action="delete/{{ data.id }}">
-    <button class="btn btn-primary btn-sm" type="submit">Delete</button>
-    </form>
+  <p style="margin-top: 10px">{{ data.id }}. Description: {{data.Description}}</p>
+  <p style="padding-left: 15px">Username: {{data.Name}}</p>
+  <p style="padding-left: 15px">Password: {{data.Password}}</p>
+    <div class="buttons">
+      <form action="update/{{ data.id }}">
+        <button class="btn btn-primary btn-sm" style="margin-left: 10px" type="submit">Update</button>
+      </form>
+    </div>
+    <div class="buttons">
+      <form action="delete/{{ data.id }}">
+        <button class="btn btn-primary btn-sm" type="submit">Delete</button>
+      </form>
+    </div>
 </div>
 {% endfor %}
 <!--For this part, make another style that will make it stick to the right of the screen for register. This is for adding new passwords-->
 <form method="post">
     {% csrf_token %}
+    <p>Description:</p>
+    <p><input type="text" size=25 name="Description"></p>
     <p>Username:</p>
     <td><input type="text" size=25 name="username"></p>
     <p>Password:</p>
     <p><input type="text" size=25 name="password"></p>
-    <button class="btn btn-primary btn-sm" type="submit" value="fcreate">Create File</button>
+    <button class="btn btn-primary btn-sm" type="submit" value="fcreate">Add entry</button>
 </form>
 {% endblock content%}

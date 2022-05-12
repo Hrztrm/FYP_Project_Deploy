@@ -33,6 +33,7 @@ def secret(request):
 
 @login_required(login_url="/login")
 def fpass(request):
+    #Add a description sekali for the apllicaiton usrename/passwords
     fname = request.user.username
     path = Path("main/Pass_Files/" + fname + ".json")
     if not path.is_file():
@@ -42,6 +43,7 @@ def fpass(request):
             print("FILE CREATED")
             return render(request, "fpass/fpass.html") #Renders a blank template
     if(request.method=="POST"): #Saves the input from the user
+        desc = request.POST['Description']
         username = request.POST['username']
         password = request.POST['password']
         with open(path, 'r+') as f:
@@ -49,9 +51,9 @@ def fpass(request):
             if bool(data) :
                 for i in data:
                     num = i["id"]
-                    user_input = {"id":num+1,"Name":username,"Password":password}
+                    user_input = {"id":num+1, "Description":desc, "Name":username, "Password":password}
             else:
-                user_input = {"id":1,"Name":username,"Password":password}
+                user_input = {"id":1, "Description":desc, "Name":username, "Password":password}
             data.append(user_input)
             f.seek(0)
             json.dump(data,f)
@@ -69,11 +71,13 @@ def update(request, id):
     return render(request, "fpass/update.html", {'Creds':det_data})
 
 def updaterecord(request, id):
+    desc = request.POST['Description']
     username = request.POST['username']
     password = request.POST['password']
     path = Path("main/Pass_Files/" + request.user.username + ".json")
     with open(path, 'r+') as f:
         data = json.load(f)
+        data[id-1]["Description"] = desc
         data[id-1]["Name"] = username
         data[id-1]["Password"] = password
         f.seek(0)

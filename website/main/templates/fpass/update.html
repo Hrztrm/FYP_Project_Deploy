@@ -7,6 +7,9 @@
 
 <form action="/updaterecord/{{ Creds.id }}" method="post">
     {% csrf_token %}
+    Inital Description:<br>
+    <input name="Description" value="{{ Creds.Description }}">
+    <br>
     Inital Username:<br>
     <input name="username" value="{{ Creds.Name }}">
     <br><br>

@@ -1,4 +1,3 @@
-from audioop import reverse
 from django.shortcuts import render,redirect
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth import login, logout, authenticate
@@ -7,8 +6,6 @@ from django.core.mail import send_mail
 from .models import ExtendUser
 import random
 from urllib.parse import urlencode
-from django.urls import reverse
-
 # Create your views here.
 #Current User information is in the request
 def login_pg(request):
@@ -18,7 +15,7 @@ def login_pg(request):
             user = form.get_user()
             #-----------------------------
             #This is working for 2fa, but feels unsafe, trying to create a better version
-            #send user to 2fa page, where code is sent to email. Then the user will be logged in
+            #This will send users to a 2fa page, where code is sent to email. Then the user will be logged in
             #username = form.cleaned_data.get('username')
             #password = form.cleaned_data.get('password')
             #base_url = reverse('verify')
@@ -29,13 +26,13 @@ def login_pg(request):
             #request.session['resp'] = ver_code
             #return redirect(url)
             #-----------------------------------
-            #If I want to do this better, using the session can be easily exploited, thus i would need to create a model 
+            #If I want to do this better, using the session can be easily exploited maybe. Gut feeling says so.
             #that extends from the user that will store the verification code
             code = request.POST['code']
             if "R_OTP" in request.POST:
                 ExtendUser.user = user
                 ExtendUser.ver_code = str(random.randint(1000, 9999))
-                print(ExtendUser.ver_code) #Ganti dengan send_mail
+                print(ExtendUser.ver_code) #Ganti dengan send_mail at final prodction
                 #send_mail(user.email)
                 return render(request, 'login/login.html', {'form': form})
             elif 'Login' in request.POST:
@@ -43,7 +40,7 @@ def login_pg(request):
                 if code == ExtendUser.ver_code:
                     print(ExtendUser.ver_code)
                     random_string = ''
-                    for _ in range(30): #Resets the ver_code
+                    for _ in range(30): #Resets the ver_code with random values schomlen from internet
                         # Considering only upper and lowercase letters
                         random_integer = random.randint(97, 97 + 26 - 1)
                         flip_bit = random.randint(0, 1)
@@ -58,7 +55,7 @@ def login_pg(request):
         form = AuthenticationForm()
     return render(request, 'login/login.html', {'form': form})
 
-def register_pg(request):
+def register_pg(request): #Perlukan ui instruction cleanup. Duplicate email checking needed. Username regsiter cam ada problem dgn "@" symbol
     if (request.method=="POST"):
         form = UserRegisterForm(request.POST)
         if form.is_valid():
