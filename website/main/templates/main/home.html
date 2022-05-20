@@ -1,11 +1,38 @@
 {% extends 'main/base.html' %}
 {% block title %}Home page{% endblock %}
 {% block content %}
-<h1>Home page !</h1>
+<div class="box">
+    <div class="box-content">
+        <h1>Home Page !</h1>
+    </div>
+</div>
+<div class="box">
+    <div class="box-content">
+        {% if user.is_authenticated %}
+        <h2>Hello, {{user.username}} {{user.is_active}}</h2>
+        {% else %}
+        <h2>Hello, {{'Guest'}}</h2>
+        {% endif %}
 
-{% if user.is_authenticated %}
-<h2>Hello, {{user.username}} {{user.is_active}}</h2>
-{% else %}
-<h2>Hello, {{'Guest'}}</h2>
-{% endif %}
+        {% if user.is_authenticated %}
+        <form action="/pass">
+            <button class="btn btn-primary btn-sm" type="submit">Password List</button>
+        </form>
+        <form action="/login/logout/" method="post">
+            {% csrf_token %}
+            <button class="btn btn-primary btn-sm" type="submit">Log Out</button>
+        </form>
+
+        {% else %}
+        <form action="/login/">
+            {% csrf_token %}
+            <button class="btn btn-primary btn-sm" type="submit">Log In</button>
+        </form>
+        <form action="/login/register">
+            {% csrf_token %}
+            <button class="btn btn-primary btn-sm" type="submit">Register</button>
+        </form>
+        {% endif %}
+    </div>
+</div>
 {% endblock %}

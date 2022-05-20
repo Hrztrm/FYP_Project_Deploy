@@ -13,25 +13,26 @@
   background-color: white;
   text-align: left;
 }
-.buttons {
-  display: inline-block;
-  margin: 5px;
+.UD_button {
+  display: flex;
+  margin: 1em;
 }
 </style>
 
 {% for data in Creds %}
 <div class = "myDiv" style="width:50%">
+
   <p style="margin-top: 10px">{{ data.id }}. Description: {{data.Description}}</p>
   <p style="padding-left: 15px">Username: {{data.Name}}</p>
   <p style="padding-left: 15px">Password: {{data.Password}}</p>
-    <div class="buttons">
+  <p style="padding-left: 15px">Entry type: {{data.p_type}}</p>
+  
+  <div class="UD_button">
       <form action="update/{{ data.id }}">
-        <button class="btn btn-primary btn-sm" style="margin-left: 10px" type="submit">Update</button>
+        <button style="margin-right: 10px" type="submit" id="{{data.id}}">Update</button>
       </form>
-    </div>
-    <div class="buttons">
       <form action="delete/{{ data.id }}">
-        <button class="btn btn-primary btn-sm" type="submit">Delete</button>
+        <button type="submit">Delete</button>
       </form>
     </div>
 </div>
@@ -45,6 +46,15 @@
     <td><input type="text" size=25 name="username"></p>
     <p>Password:</p>
     <p><input type="text" size=25 name="password"></p>
-    <button class="btn btn-primary btn-sm" type="submit" value="fcreate">Add entry</button>
+    <label for="Password_Type">Choose Entry Type:</label>
+    <select name="p_type">
+      <option value="General" selected>General</option>
+      <option value="Banking">Banking</option>
+      <option value="Login">Login</option>
+      <option value="Email">Email</option>
+    </select>
+    <button type="submit" value="fcreate">Add entry</button>
 </form>
+
+
 {% endblock content%}

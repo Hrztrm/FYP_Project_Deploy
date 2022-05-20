@@ -13,7 +13,7 @@ def login_pg(request):
         form = AuthenticationForm(data=request.POST)
         if form.is_valid():
             user = form.get_user()
-            #-----------------------------
+            #----------------------------- Ignore this part of the code. Unused for security reasons
             #This is working for 2fa, but feels unsafe, trying to create a better version
             #This will send users to a 2fa page, where code is sent to email. Then the user will be logged in
             #username = form.cleaned_data.get('username')
@@ -70,7 +70,8 @@ def logout_pg(request):
         logout(request)
         return redirect('home')
 
-#Verify is unused as of now, because the way verification is done does not use this
+#Verify is unused as of now, because the current verification does not use this
+#Ignore this part of the code. Unused for security reasons
 def verify_pg(request): #The command login is done here. The user model and authentication value is received from the login_pg.
     username = request.GET.get('username')
     password = request.GET.get('password')
@@ -89,7 +90,7 @@ def verify_pg(request): #The command login is done here. The user model and auth
     else:
         return render(request, 'verify/verify.html')
     
-def sending_mail(email):
+def sending_mail(email): #SMS style
     ver_code = random.randint(1000, 9999)
     send_mail(
     'Verification Code', #Email Header
@@ -99,3 +100,7 @@ def sending_mail(email):
     fail_silently=False,
     )
     return ver_code
+
+#Letka balik password
+#Type of the password
+#Search for descriptoun entry

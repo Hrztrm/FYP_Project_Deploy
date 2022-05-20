@@ -4,30 +4,178 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <title>{% block title %}Testing Site{% endblock %}</title>
 </head>
 <body>
-    <div class="container">
+    <style>
+        html {
+            background-color: #ecf0f5
+        }
+        
+        .sidebar {
+            height: 100%;
+            width: 150px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            padding-top: 0px;
+            background-color: lightblue;
+            z-index:1;
+            }
+        .sidebar a {
+            padding: 8px;
+            font-size: 24px;
+            display: block;
+            }
+        .sidebar a:hover {
+            cursor: pointer;
+            opacity: .5;
+            background-color: #ecf0f5
+            }
+
+        
+        .box{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .box-content {
+            padding: 8px 35px;
+            font-size: 20px;
+            border: 1px solid gray;
+        }
+        .box-content form{
+            display: inline-block;
+            font-size: 20px;
+            margin: 10px auto;
+            padding: 10px;
+        }
+
+        body {
+            font-family: arial;
+            margin: 0;
+            padding: 0;
+        }
+
+        #popup-1 {
+            display: none;
+            background-color: rgba(0,0,0,0.5);
+            position: absolute;
+            height: 100%;
+            width: 100%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index:2;
+        }
+        
+        .popup-content {
+            position: relative;
+            padding: 20px;
+            margin: 0 auto;
+            background-color: white !important;
+            width: 400px;
+            top: 5vh;
+        }
+
+        .is-visible{
+            display:block !important;
+        }
+
+        .is-not-visible{
+            display:none !important;
+        }
+    
+    </style>
+    <!--Box is for the box at the top centre--> 
+    <div class="body-text">
+
         {% block content %}
         {% endblock %}
+            <div id="popup-1">
+                <div class="popup-content">
+                    <form>
+                        Inital Description:<br>
+                        <input name="Description" value="{{Creds.Description}}" autocomplete="off">
+                        <br><br>
+                        Inital Username:<br>
+                        <input name="username" value="{{ Creds.Name }}" autocomplete="off">
+                        <br><br>
+                        Initial Password:<br>
+                        <input name="password" value="{{ Creds.Password }}" autocomplete="off">
+                        <br><br>
+                        <input type="submit" value="Submit">
+                    </form>
+                    <h1>Popup Title</h1>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+                    tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+                    quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+                    consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+                    cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+                    proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+                    <button id="close-popup-1">Close</button>
+                </div>
+            </div>
+            <!--Position can be anywhere are, z-index is there to make sure yg the text is behind everyhitng
+
+            var popup1 = document.getElementById("popup-1")
+            
+        -->
+        <a style="position:absolute; left: 50%; cursor:pointer; z-index:1" id="open-popup-1">Open Popup</a>
+        
+        <button style="position:absolute; left:80%" class="test" id="CHocolate">Hello there</button>
+        <p style="position:absolute; z-index:4;" class="is-not-visible" id="choc">aksljalskdjflkasjlkfdjsjalkjfkskajfkljsdf</p>
+        <button style="position:absolute; z-index:4;" class="is-not-visible" id="choca">Close</button>
+        <button style="position:absolute; left:90%" class="test" id="CHocolate">Rwar</button>
+        <script>
+            jQuery(document).ready(function($){
+            var popup1 = document.getElementById("popup-1")
+            var openPopup1 = document.getElementById("open-popup-1")
+            var closePopup1 = document.getElementById('close-popup-1')
+
+            $('.test').on('click', function(event){
+                var element = $(this); /*Refer to the element that the button is in */
+                var em = $('.test'); /*Refer to everything within this class */
+                var tes = $('#choc'); /*Refer to id with choc*/
+                
+                $('#choca').removeClass('is-not-visible');
+                tes.removeClass('is-not-visible');
+
+                $(this).addClass('is-not-visible');
+                $('#choc').addClass('is-visible');
+                tes.addClass('is-visible'); /* Adding a class, which will get the styles*/
+                console.log(tes);
+            });
+
+            $('#choca').on('click', function(event){
+                var tes = $('#choc');
+                $(this).removeClass('is-visible');
+                tes.removeClass('is-visible');
+                $(this).addClass('is-not-visible');
+                tes.addClass('is-not-visible');
+            });
+            openPopup1.addEventListener('click', () => {
+            	popup1.style.display = "block";
+            })
+
+            closePopup1.addEventListener('click', () => {
+            	popup1.style.display = "none";
+            })
+        });
+        </script>
     </div>
-    
-    {% if user.is_authenticated %}
-    <form action="/pass">
-        <button class="btn btn-primary btn-sm" type="submit">Password List</button>
-    </form>
-    <form action="/login/logout/" method="post">
-        {% csrf_token %}
-        <button class="btn btn-primary btn-sm" type="submit">Log Out</button>
-    </form>
+    <div class="sidebar">
+        <nav>
+        <a href="/login/">Login</a>
+        <a href="/login/register">Register</a>
+        </nav>
+    </div>
 
-    {% else %}
-    <form action="/login/">
-        {% csrf_token %}
-        <button class="btn btn-primary btn-sm" type="submit">Log In</button>
-    </form>
-
-    {% endif %}
 </body>
 </html>
+
+<!--        .body-text{
+            margin-left: 150px;
+            font-size: 20px;
+        }-->

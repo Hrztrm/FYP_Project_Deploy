@@ -46,14 +46,15 @@ def fpass(request):
         desc = request.POST['Description']
         username = request.POST['username']
         password = request.POST['password']
+        p_type = request.POST['p_type']
         with open(path, 'r+') as f:
             data = json.load(f)
             if bool(data) :
                 for i in data:
                     num = i["id"]
-                    user_input = {"id":num+1, "Description":desc, "Name":username, "Password":password}
+                    user_input = {"id":num+1, "Description":desc, "Name":username, "Password":password, "p_type":p_type}
             else:
-                user_input = {"id":1, "Description":desc, "Name":username, "Password":password}
+                user_input = {"id":1, "Description":desc, "Name":username, "Password":password, "p_type":p_type}
             data.append(user_input)
             f.seek(0)
             json.dump(data,f)
@@ -74,12 +75,14 @@ def updaterecord(request, id):
     desc = request.POST['Description']
     username = request.POST['username']
     password = request.POST['password']
+    p_type = request.POST['p_type']
     path = Path("main/Pass_Files/" + request.user.username + ".json")
     with open(path, 'r+') as f:
         data = json.load(f)
         data[id-1]["Description"] = desc
         data[id-1]["Name"] = username
         data[id-1]["Password"] = password
+        data[id-1]["p_type"] = p_type
         f.seek(0)
         f.truncate()
         json.dump(data,f)

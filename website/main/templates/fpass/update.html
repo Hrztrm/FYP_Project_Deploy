@@ -16,6 +16,21 @@
     Initial Password:<br>
     <input name="password" value="{{ Creds.Password }}">
     <br><br>
+    Initial Entry Type:<br>
+    <select name="p_type" id="p_type" value="{{ Creds.p_type }}">
+        <option value="General">General</option>
+        <option value="Banking">Banking</option>
+        <option value="Login">Login</option>
+        <option value="Email">Email</option>
+    </select>
+    <br><br>
+
     <input type="submit" value="Submit">
     </form>
+    <script>
+        $(function() {
+            var temp="{{Creds.p_type}}"; 
+            $("#p_type").val(temp);
+        });
+    </script>
 {% endblock %}
