@@ -1,4 +1,3 @@
-from audioop import reverse
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, authenticate
@@ -14,7 +13,8 @@ from rest_framework.permissions import AllowAny, IsAuthenticated
 
 # Create your views here.
 def home(response): #Response can be changed to other names, it refers a response/request from user
-    return render(response, 'main/home.html')
+    #return redirect('/login')
+    return render(response, 'main/home.html') #Delete this after completion of everything
 
 #Testing another way of logging in
 @login_required(login_url="/login")
@@ -64,6 +64,7 @@ def fpass(request):
         data = json.load(f)
         return render(request, "fpass/fpass.html", {'Creds':data})
 
+@login_required(login_url="/login")
 def update(request, id):
     path = Path("main/Pass_Files/" + request.user.username + ".json")
     with open(path, 'r') as f:
@@ -71,6 +72,7 @@ def update(request, id):
         det_data = data[id-1]
     return render(request, "fpass/update.html", {'Creds':det_data})
 
+@login_required(login_url="/login")
 def updaterecord(request, id):
     desc = request.POST['Description']
     username = request.POST['username']
@@ -88,6 +90,7 @@ def updaterecord(request, id):
         json.dump(data,f)
     return redirect('/pass')
 
+@login_required(login_url="/login")
 #deletes a record in JSON file
 def delete(request, id):
     path = Path("main/Pass_Files/" + request.user.username + ".json")

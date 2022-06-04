@@ -1,12 +1,16 @@
 {% extends 'register/base.html' %}
-{% block title %}Register page{% endblock %}
+{% block title %}Registeration{% endblock %}
 {% block content %}
+<div class="box-content">
     <h1>Register !</h1>
     <form action="/login/register/" method="post">
         {% csrf_token %} <!--Cross Site Reference Token, Used to validate forms. Mandatory-->
         {{form.as_p}}
         <input type="submit" value="Register">
     </form>
-
+    <form action="/login"> <!--Shows Register button at login screen-->
+        <button type="submit">Back</button>
+    </form>
+</div>
 
 {% endblock%}

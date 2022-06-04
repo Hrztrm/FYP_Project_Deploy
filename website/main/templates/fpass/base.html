@@ -10,28 +10,84 @@
 
     <title>{% block title %}Testing Site{% endblock %}</title>
 </head>
+<!--position: absolute;-->
 <body>
     <style>
-
+        html {
+            min-height:100%;
+            background-color: #ecf0f5;
+            position:relative;
+            margin:0;
+        }
+        .sidebar {
+            height:70vh;
+            width: 150px;
+            float:left;
+            top: 0;
+            margin-left: 17%;
+            background-color: lightblue;
+        }
+        .sidebar a {
+            padding: 8px;
+            font-size: 24px;
+            display: block;
+        }
+        .sidebar a:hover {
+            cursor: pointer;
+            opacity: .5;
+            background-color: #ecf0f5
+        }
+        #Diborder_entry{
+            border: 5px outset blue;
+            background-color: white;
+            position: static;
+            align-items: centre;
+            width: 40%;
+            overflow: auto;
+            height:70vh;
+            float:left;
+          }
+        .myDiv {
+          display:flex;
+          border: 1px outset black;
+          background-color: white;
+          text-align: left;
+          margin: 0 auto;
+          width: 100%;
+        }
+        .UD_button {
+          display: flex;
+          margin: 1em;
+        }
+        .myUL {
+          /* Remove default list styling */
+          list-style-type: none;
+          padding-left: 5px;
+          margin: 0;
+        }
+        .right_column{
+          float:left;
+        }
+        .new_entry{
+          align-items: centre;
+          border: 1px outset black;
+          background-color: white;
+          width:100%;
+          bottom: 0;
+          padding-left: 15px;
+        }
+        .Search_box{
+          border: 1px outset black;
+          background-color: white;
+          padding: 0 15px 15px 15px;
+          margin-bottom: 20px;
+        }
     </style>
-    <div class="container">
+
+    <div style="position: relative; margin-top: 5em">
         {% block content %}
         {% endblock %}
     </div>
-    <form action="/">
-        <button class="btn btn-primary btn-sm" type="submit">Homepage</button>
-    </form>
-    {% if user.is_authenticated %}
-    <form action="/login/logout/" method="post">
-        {% csrf_token %}
-        <button class="btn btn-primary btn-sm" type="submit">Log Out</button>
-    </form>
 
-    {% else %}
-    <form action="/login/">
-        {% csrf_token %}
-        <button class="btn btn-primary btn-sm" type="submit">Log In</button>
-    </form>
-    {% endif %}
 </body>
 </html>

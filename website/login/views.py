@@ -53,7 +53,7 @@ def login_pg(request):
                     return redirect('home') #Redirect to page to verifiying page
     else:
         form = AuthenticationForm()
-    return render(request, 'login/login.html', {'form': form})
+    return render(request, 'login/login.html', {'form': form}) #Custom make the login and registeration
 
 def register_pg(request): #Perlukan ui instruction cleanup. Duplicate email checking needed. Username regsiter cam ada problem dgn "@" symbol
     if (request.method=="POST"):

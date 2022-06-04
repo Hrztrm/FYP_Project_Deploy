@@ -1,31 +1,29 @@
 {% extends 'fpass/base.html' %}
 {% block Heading%}
 {% endblock %}
-{% block title %}Home page{% endblock %}
+{% block title %}The Contents{% endblock %}
 {% block content %}
-<h1>Password Mangerialsness page !</h1>
+<div class="sidebar">
+  <nav>
+  <a onclick="cat_filter(event)" name="All">All Entry</a>
+  <a onclick="cat_filter(event)" name="General">General</a>
+  <a onclick="cat_filter(event)" name="Email">Email</a>
+  <a onclick="cat_filter(event)" name="Login">Login</a>
+  <a onclick="cat_filter(event)" name="Banking">Banking</a>
+  <br><br><br><br><br><br><br><br><br><br><br><br>
+  <a href="/login/">User Info</a>
+  <a href="/login/logout/">Log out</a>
+  </nav>
+</div>
 
-<h2>Hello, {{user.username}}</h2>
-
-<style>
-.myDiv {
-  border: 1px outset black;
-  background-color: white;
-  text-align: left;
-}
-.UD_button {
-  display: flex;
-  margin: 1em;
-}
-</style>
-
+<div id = "Diborder_entry">
 {% for data in Creds %}
-<div class = "myDiv" style="width:50%">
-
-  <p style="margin-top: 10px">{{ data.id }}. Description: {{data.Description}}</p>
-  <p style="padding-left: 15px">Username: {{data.Name}}</p>
-  <p style="padding-left: 15px">Password: {{data.Password}}</p>
-  <p style="padding-left: 15px">Entry type: {{data.p_type}}</p>
+<div class = "myDiv" id = "Dib">
+  <ul class="myUL">
+  <li><p style="margin-top: 10px">{{ data.id }}. Description: {{data.Description}}</p></li>
+  <li><p style="padding-left: 15px">Username: {{data.Name}}</p></li>
+  <li><p style="padding-left: 15px">Password: {{data.Password}}</p></li>
+  <li><p style="padding-left: 15px">Entry type: {{data.p_type}}</p></li>
   
   <div class="UD_button">
       <form action="update/{{ data.id }}">
@@ -35,10 +33,18 @@
         <button type="submit">Delete</button>
       </form>
     </div>
+  </ul>
 </div>
 {% endfor %}
+</div>
+<div class="right_column">
+<div class="Search_box">
+  <p>Search</p>
+  <input type="text" id="myInput" onkeyup="filter()" placeholder="Search for Description...">
+</div>
 <!--For this part, make another style that will make it stick to the right of the screen for register. This is for adding new passwords-->
-<form method="post">
+<div class="new_entry">
+  <form method="post">
     {% csrf_token %}
     <p>Description:</p>
     <p><input type="text" size=25 name="Description"></p>
@@ -53,8 +59,55 @@
       <option value="Login">Login</option>
       <option value="Email">Email</option>
     </select>
-    <button type="submit" value="fcreate">Add entry</button>
-</form>
+    <br><br>
+    <button type="submit" style="padding: 10px; margin-bottom: 10px"  value="fcreate">Add entry</button>
+  </form>
+</div>
+</div>
 
+<script>
+  function filter() {
+    // Declare variables
+    var input, filter, ul, li, a, i, txtValue, div;
+    input = document.getElementById('myInput');
+    div = document.getElementsByClassName('myDiv');
+    filter = input.value.toUpperCase();
+    ul = document.getElementsByClassName("myUL");
+    console.log("Filtering for: " + filter);
+    // Loop through all list items, and hide those who don't match the search query
+    for (i = 0; i < ul.length; i++) {
+      a = ul[i].getElementsByTagName("p")[0];
+      txtValue = a.textContent;
+      if (txtValue.slice(16).toUpperCase().indexOf(filter) > -1) {
+        div[i].style.display = "";
+      } else {
+        div[i].style.display = "none";
+      }
+    }
+  }
+
+  function cat_filter(e) {
+    // Declare variables
+    var cat_filter_value, ul, a, i, txtValue, div;
+    cat_filter_value = e.target.name;
+    div = document.getElementsByClassName('myDiv');
+    ul = document.getElementsByClassName("myUL");
+    // Loop through all list items, and hide those who don't match the search query
+    console.log("Filtering for Entry Type: " + cat_filter_value);
+    for (i = 0; i < ul.length; i++) {
+      a = ul[i].getElementsByTagName("p")[3];
+      txtValue = a.textContent || a.innerText;
+      if (cat_filter_value === "All"){
+        div[i].style.display = "";
+      }
+      else if (txtValue.toUpperCase().indexOf(cat_filter_value.toUpperCase()) > -1) {
+        div[i].style.display = "";
+      } 
+      else {
+        div[i].style.display = "none";
+      }
+    }
+  }
+</script>
 
 {% endblock content%}

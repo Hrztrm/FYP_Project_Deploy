@@ -1,30 +1,43 @@
 {% extends 'login/base.html' %}
 {% block title %}Login page{% endblock %}
 {% block content %}
-    <h1>Login !</h1>
+    <h1 style="padding-left: 15px">Login !</h1>
     {% if not user.is_authenticated %} <!--Show this page user is not already logged in-->
     <form action="" method="post">
         {% csrf_token %} <!--Cross Site Reference Token, Used to validate forms. Mandatory for sending data-->
         {{form.as_p}}
         <td>Verification Code:</td>
-        <td><input type="text" size=25 name="code"></td>
-        <button type="submit" name="R_OTP">Request OTP</button> <!--Adds a button for logging in-->
-        <button type="submit" name="Login">Log in</button> <!--Adds a button for logging in-->
-    </form>
-    
-    <form action="/login/register"> <!--Shows Register button at login screen-->
-    <button class="btn btn-primary btn-sm" type="submit">Register</button>
+        <td><input type="text" size=12 name="code"></td>
+        <button type="submit" name="R_OTP">Request OTP</button> <!--Adds a button for Requesting OTP-->
+        <br>
+        <br>
+        <div class="UD_button">
+            <button type="submit" name="Login">Log in</button> <!--Adds a button for logging in-->
+        </div>
     </form>
 
+    <form action="/login/register"> <!--Shows Register button at login screen-->
+        <button type="submit">Register</button>
+    </form>
+    
     {% else %} <!--Show this page which only shows username when user is already logged in-->
     <form method="post">
         {% csrf_token %}
         <tr>
             <td>Username:</td>
             <td>{{user.username}}</td>
+            <br>
             <td>Email:</td>
             <td>{{user.email}}</td>
         </tr>
-    </form>    
+    </form>
+    <div style="display:flex">        
+    <form action="/pass">
+        <button class="btn btn-primary btn-sm" type="submit">Back</button>
+    </form>
+    <form action="/login/logout/" method="post">
+        {% csrf_token %}
+        <button class="btn btn-primary btn-sm" type="submit">Log Out</button>
+    </form>
     {% endif %}
 {% endblock%}
