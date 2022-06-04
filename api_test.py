@@ -5,7 +5,11 @@ content = {
     "username":"Ikmal",
     "password":"CHOCOLATE123"
 }
-get_response = requests.post(endpoint, content)
+try:
+    get_response = requests.post(endpoint, content)
+except:
+    print("Failed")
+    exit (0)
 json_get_response = get_response.json()
 #print(get_response.text)
 print(json_get_response)
