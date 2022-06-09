@@ -86,6 +86,63 @@
         .is-not-visible{
             display:none !important;
         }
+
+        /* Popup container - can be anything you want */
+.popup {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+/* The actual popup */
+.popup .popuptext {
+  visibility: hidden;
+  width: 160px;
+  background-color: #555;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 8px 0;
+  position: absolute;
+  z-index: 1;
+  bottom: 125%;
+  left: 50%;
+  margin-left: -80px;
+}
+
+/* Popup arrow */
+.popup .popuptext::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: #555 transparent transparent transparent;
+}
+
+/* Toggle this class - hide and show the popup */
+.popup.show .popuptext {
+  visibility: visible;
+  -webkit-animation: fadeIn 1s;
+  animation: fadeIn 1s;
+}
+
+/* Add animation (fade in the popup) */
+@-webkit-keyframes fadeIn {
+  from {opacity: 0;} 
+  to {opacity: 1;}
+}
+
+@keyframes fadeIn {
+  from {opacity: 0;}
+  to {opacity:1 ;}
+}
     
     </style>
     <!--Box is for the box at the top centre--> 
@@ -93,6 +150,7 @@
 
         {% block content %}
         {% endblock %}
+
             <div id="popup-1">
                 <div class="popup-content">
                     <form>
@@ -128,50 +186,72 @@
         <p style="position:absolute; z-index:4;" class="is-not-visible" id="choc">aksljalskdjflkasjlkfdjsjalkjfkskajfkljsdf</p>
         <button style="position:absolute; z-index:4;" class="is-not-visible" id="choca">Close</button>
         <button style="position:absolute; left:90%" class="test" id="CHocolate">Rwar</button>
-        <script>
-            jQuery(document).ready(function($){
-            var popup1 = document.getElementById("popup-1")
-            var openPopup1 = document.getElementById("open-popup-1")
-            var closePopup1 = document.getElementById('close-popup-1')
 
-            $('.test').on('click', function(event){
-                var element = $(this); /*Refer to the element that the button is in */
-                var em = $('.test'); /*Refer to everything within this class */
-                var tes = $('#choc'); /*Refer to id with choc*/
-                
-                $('#choca').removeClass('is-not-visible');
-                tes.removeClass('is-not-visible');
-
-                $(this).addClass('is-not-visible');
-                $('#choc').addClass('is-visible');
-                tes.addClass('is-visible'); /* Adding a class, which will get the styles*/
-                console.log(tes);
-            });
-
-            $('#choca').on('click', function(event){
-                var tes = $('#choc');
-                $(this).removeClass('is-visible');
-                tes.removeClass('is-visible');
-                $(this).addClass('is-not-visible');
-                tes.addClass('is-not-visible');
-            });
-            openPopup1.addEventListener('click', () => {
-            	popup1.style.display = "block";
-            })
-
-            closePopup1.addEventListener('click', () => {
-            	popup1.style.display = "none";
-            })
-        });
-        </script>
     </div>
     <div class="sidebar">
         <nav>
         <a href="/login/">Login</a>
         <a href="/login/register">Register</a>
+        <h2>Popup</h2>
+
+        <div class="popup">Click me to toggle the popup!
+          <span class="popuptext">A Simple Popup!</span>
+        </div>
+        
+        <div class="popup"><input placeholder="Tchosad" type='text'>
+          <span class="popuptext">ASPODPASOPDASODOAPS</span>
+        </div>
         </nav>
     </div>
+    <script>
 
+        const popups = [...document.getElementsByClassName('popup')];
+
+        window.addEventListener('click', ({ target }) => {
+          const popup = target.closest('.popup');
+          const clickedOnClosedPopup = popup && !popup.classList.contains('show');
+        
+          popups.forEach(p => p.classList.remove('show'));
+        
+          if (clickedOnClosedPopup) popup.classList.add('show');  
+        });
+
+        
+        jQuery(document).ready(function($){
+        var popup1 = document.getElementById("popup-1")
+        var openPopup1 = document.getElementById("open-popup-1")
+        var closePopup1 = document.getElementById('close-popup-1')
+
+        $('.test').on('click', function(event){
+            var element = $(this); /*Refer to the element that the button is in */
+            var em = $('.test'); /*Refer to everything within this class */
+            var tes = $('#choc'); /*Refer to id with choc*/
+            
+            $('#choca').removeClass('is-not-visible');
+            tes.removeClass('is-not-visible');
+
+            $(this).addClass('is-not-visible');
+            $('#choc').addClass('is-visible');
+            tes.addClass('is-visible'); /* Adding a class, which will get the styles*/
+            console.log(tes);
+        });
+
+        $('#choca').on('click', function(event){
+            var tes = $('#choc');
+            $(this).removeClass('is-visible');
+            tes.removeClass('is-visible');
+            $(this).addClass('is-not-visible');
+            tes.addClass('is-not-visible');
+        });
+        openPopup1.addEventListener('click', () => {
+            popup1.style.display = "block";
+        })
+
+        closePopup1.addEventListener('click', () => {
+            popup1.style.display = "none";
+        })
+    });
+    </script>
 </body>
 </html>
 

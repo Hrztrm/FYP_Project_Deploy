@@ -1,16 +1,126 @@
 {% extends 'register/base.html' %}
 {% block title %}Registeration{% endblock %}
 {% block content %}
-<div class="box-content">
-    <h1>Register !</h1>
+
+<div class="box_col">
+    <strong><p style="text-align: center; margin-bottom: 1.5rem; font-size:1.25rem;">Register !</p></strong>
+<div class="box-outer-content">
+    <div class="box-inner-content">
     <form action="/login/register/" method="post">
         {% csrf_token %} <!--Cross Site Reference Token, Used to validate forms. Mandatory-->
-        {{form.as_p}}
-        <input type="submit" value="Register">
+        <div class="form-group">
+            <label for="email">Email address</label>
+            <input type="email" class="form-control" name="email" id="email" placeholder="Enter email" value="{{ data.email }}" Required>
+        </div>
+        <div class="form-group">
+            <label for="Username">Username</label>
+            <input type="text" class="form-control" name="username" id="username" placeholder="Enter Username" value="{{ data.username }}" Required>
+            <span class="input_info">
+                Rules for Username:
+                <ul>
+                <li id="sim" class="valid">Not contains beginning of email</li>
+                </ul>
+            </span>
+        </div>
+        <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" class="form-control" name="password" id="password" placeholder="Enter Password" Required>
+            <span class="input_info">
+                Rules for Password:
+                <ul>
+                <li id="cas" class="invalid">Contains upper and lower case letters</li>
+                <li id="dig" class="invalid">Contains digits</li>
+                <li id="spe" class="invalid">Contains special character</li>
+                <li id="len" class="invalid">Password length greater than 8</li>
+                </ul>
+            </span>
+        </div>
+        <div class="form-group">
+            <label for="password2">Confirm Password</label>
+            <input type="password" class="form-control" name="password2" id="password2"
+                placeholder="Confirm Your Password" Required>
+                <span class="input_info">
+                    Rules for Confirm Password:
+                    <ul>
+                    <li id="same" class="invalid">Same as Password</li>
+                    </ul>
+                </span>
+        </div>
+        <div class="Buttons">
+            <form action="/login">
+                <button type="submit" class="btn"  name="back" formnovalidate>Back</button>
+            </form>
+            <button type="submit" class="btn" style="margin-left: 0.5rem;" value="Register">Register</button>
+        </div>
     </form>
-    <form action="/login"> <!--Shows Register button at login screen-->
-        <button type="submit">Back</button>
-    </form>
+
 </div>
+</div>
+</div>
+<script>
+    var user_in = document.getElementById("username");
+    var email_in = document.getElementById("email");
+    var pass_in = document.getElementById("password");
+    var pass_in2 = document.getElementById("password2");
+    var same = document.getElementById("same");
+    var letter = document.getElementById("cas");
+    var dig = document.getElementById("dig");
+    var spe = document.getElementById("spe");
+    var len = document.getElementById("len");
+    var sim = document.getElementById("sim");
+
+    user_in.onkeyup = function(){
+        if (!(user_in.value.match(email_in.value.split("@")[0]))){
+        sim.classList.remove("invalid");
+        sim.classList.add("valid");
+      } else {
+        sim.classList.remove("valid");
+        sim.classList.add("invalid");
+      }
+    }
+    pass_in.onkeyup = function(){
+        if(pass_in.value.match(/[a-z]/g) && pass_in.value.match(/[A-Z]/g)) {  
+          letter.classList.remove("invalid");
+          letter.classList.add("valid");
+        } else {
+          letter.classList.remove("valid");
+          letter.classList.add("invalid");
+        }
+
+        if(pass_in.value.match(/[0-9]/g)) {  
+            dig.classList.remove("invalid");
+            dig.classList.add("valid");
+        } else {
+            dig.classList.remove("valid");
+            dig.classList.add("invalid");
+        }
+
+        if(pass_in.value.match(/[()[\]{}|\\`~!@#$%^&*_\-+=;:\'",<>./?]/g)) {  
+            spe.classList.remove("invalid");
+            spe.classList.add("valid");
+         } else {
+            spe.classList.remove("valid");
+            spe.classList.add("invalid");
+        }
+
+        if(pass_in.value.length >= 8) {  
+            len.classList.remove("invalid");
+            len.classList.add("valid");
+         } else {
+            len.classList.remove("valid");
+            len.classList.add("invalid");
+        }
+    }
+
+    pass_in2.onkeyup = function(){
+        if(pass_in2.value === pass_in.value){
+            same.classList.remove("invalid");
+            same.classList.add("valid");
+         } else {
+            same.classList.remove("valid");
+            same.classList.add("invalid");
+        }
+    }
+</script>
 
 {% endblock%}

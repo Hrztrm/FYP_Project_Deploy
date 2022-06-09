@@ -1,18 +1,24 @@
 from django.shortcuts import render,redirect
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth import login, logout, authenticate
-from .forms import UserRegisterForm
 from django.core.mail import send_mail
 from .models import ExtendUser
+from django.contrib.auth.password_validation import validate_password
 import random
-from urllib.parse import urlencode
+from django.contrib.auth.models import User
+from django.contrib import messages
+import re
+from config import *
 # Create your views here.
 #Current User information is in the request
 def login_pg(request):
     if (request.method=="POST"):
-        form = AuthenticationForm(data=request.POST)
-        if form.is_valid():
-            user = form.get_user()
+        if "Register" in request.POST:
+            return redirect(register_pg)
+        username = request.POST['username']
+        password = request.POST['password']
+        user = authenticate(username=username, password=password)
+        data = {"username": username,"password":password}
+        if user is not None:
             #----------------------------- Ignore this part of the code. Unused for security reasons
             #This is working for 2fa, but feels unsafe, trying to create a better version
             #This will send users to a 2fa page, where code is sent to email. Then the user will be logged in
@@ -34,7 +40,7 @@ def login_pg(request):
                 ExtendUser.ver_code = str(random.randint(1000, 9999))
                 print(ExtendUser.ver_code) #Ganti dengan send_mail at final prodction
                 #send_mail(user.email)
-                return render(request, 'login/login.html', {'form': form})
+                return render(request, 'login/login.html', {"data":data})
             elif 'Login' in request.POST:
                 print(ExtendUser.ver_code) 
                 if code == ExtendUser.ver_code:
@@ -50,25 +56,63 @@ def login_pg(request):
                         random_string += (chr(random_integer))
                     ExtendUser.ver_code = random_string
                     login(request, user)
-                    return redirect('home') #Redirect to page to verifiying page
-    else:
-        form = AuthenticationForm()
-    return render(request, 'login/login.html', {'form': form}) #Custom make the login and registeration
+                    return redirect('fpass') #Redirect to page to verifiying page
+                elif code == "":
+                        messages.info(request, 'Please enter verification code')
+                        return render(request, 'login/login.html', {"data":data})
+                else:
+                        messages.info(request, 'Code Incorrect')
+                        return render(request, 'login/login.html', {"data":data})
+        else:
+            messages.info(request, 'Account not found')
+            return render(request, 'login/login.html', {"data":data})
 
-def register_pg(request): #Perlukan ui instruction cleanup. Duplicate email checking needed. Username regsiter cam ada problem dgn "@" symbol
-    if (request.method=="POST"):
-        form = UserRegisterForm(request.POST)
-        if form.is_valid():
-            form.save()
+    return render(request, 'login/login.html') #Custom make the login and registeration
+
+def register_pg(request): #Perlukan ui instruction cleanup. Validation for password and Username
+    #if (request.method=="POST"):
+    #    form = UserRegisterForm(request.POST)
+    #    if form.is_valid():
+    #        form.save()
+    #        return redirect('login')
+    #else:
+    #    form = UserRegisterForm()
+    #return render(request, 'register/register.html', {'form': form})
+    #--------------------------------------------------------------------
+    if (request.method=="POST"): #Customized Registeration Page
+        if "back" in request.POST:
+            return redirect(login_pg)
+        username = request.POST['username']
+        password = request.POST['password']
+        password2 = request.POST['password2']
+        email = request.POST['email']
+        data = {"username": username, "email": email}
+        if User.objects.filter(email=email).exists(): #Duplicate email check
+            messages.info(request, 'Email is already taken')
+            return render(request, 'register/register.html', {"data":data})
+        if password == password2: #Validation checks
+            if email.split("@")[0] in username and len(email.split("@")[0]) > 3:
+                messages.info(request, 'Username cannot contain beginning of email')
+                return render(request, 'register/register.html', {"data":data})
+            p_err = validation(password)
+            if p_err:
+                messages.info(request, p_err)
+                return render(request, 'register/register.html', {"data":data})
+            #No errors
+            user = User.objects.create_user(username=username, password=password, email=email)
+            user.save()
             return redirect('login')
+        else:
+            messages.info(request, 'Passwords do not match')
+            return render(request, 'register/register.html', {"data":data})
     else:
-        form = UserRegisterForm()
-    return render(request, 'register/register.html', {'form': form})
+        return render(request, 'register/register.html')
+    
 
 def logout_pg(request):
     if request.user.is_authenticated:
         logout(request)
-        return redirect('home')
+    return redirect('login')
 
 #Verify is unused as of now, because the current verification does not use this
 #Ignore this part of the code. Unused for security reasons
@@ -95,12 +139,21 @@ def sending_mail(email): #SMS style
     send_mail(
     'Verification Code', #Email Header
     str(ver_code), #The email body
-    'leeneil562@yahoo.com', #Email from
+    E_host_user, #Email from
     [email], #Email to the logged in user
     fail_silently=False,
     )
     return ver_code
 
-#Letka balik password
-#Type of the password
-#Search for descriptoun entry
+def validation(passw):
+    err = []
+    err2 = validate_password(passw) #Checks for common, length, and all numerical
+    for a in err2:
+        err.append(str(a).split("'")[1]) 
+    if not re.findall('[()[\]{}|\\`~!@#$%^&*_\-+=;:\'",<>./?]', passw): #Special character
+        err.append("Password must contain at least 1 special character: " + "()[]{}|\`~!@#$%^&*_-+=;:'\",<>./?")
+    if not (re.findall('[A-Z]', passw) and re.findall('[a-z]', passw)): #Uppercase n Lowercase
+        err.append("Password must contains uppercase and lowercase letters, A-Z.")
+    if not re.findall('[0-9]', passw): #Numerical
+        err.append("Password must contain at least 1 digit, 0-9.")
+    return err
