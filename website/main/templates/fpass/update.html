@@ -5,19 +5,19 @@
 {% block content %}
 <h1>Password Updating page !</h1>
 
-<form action="/updaterecord/{{ Creds.id }}" method="post">
+<form action="/updaterecord/{{ Creds.P_Id }}" method="post">
     {% csrf_token %}
     Inital Description:<br>
-    <input name="Description" value="{{ Creds.Description }}">
+    <input name="Description" value="{{ Creds.Desc }}">
     <br><br>
     Inital Username:<br>
-    <input name="username" value="{{ Creds.Name }}">
+    <input name="username" value="{{ Creds.Username }}">
     <br><br>
     Initial Password:<br>
     <input name="password" value="{{ Creds.Password }}">
     <br><br>
     Initial Entry Type:<br>
-    <select name="p_type" id="p_type" value="{{ Creds.p_type }}">
+    <select name="P_type" id="P_type" value="{{ Creds.P_type }}">
         <option value="General">General</option>
         <option value="Banking">Banking</option>
         <option value="Login">Login</option>
@@ -29,8 +29,8 @@
     </form>
     <script>
         $(function() {
-            var temp="{{Creds.p_type}}"; 
-            $("#p_type").val(temp);
+            var temp="{{Creds.P_type}}"; 
+            $("#P_type").val(temp);
         });
     </script>
 {% endblock %}

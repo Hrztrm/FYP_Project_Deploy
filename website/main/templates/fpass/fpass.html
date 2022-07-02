@@ -4,8 +4,9 @@
 {% block title %}The Contents{% endblock %}
 {% block content %}
 <div class="sidebar">
+  {% load static%}
   <nav>
-  <a onclick="cat_filter(event)" name="All">All Entry</a>
+  <a onclick="cat_filter(event)" name="All"><img src="{%static "/icons/account.png"%}"/>All Entry</a>
   <a onclick="cat_filter(event)" name="General">General</a>
   <a onclick="cat_filter(event)" name="Email">Email</a>
   <a onclick="cat_filter(event)" name="Login">Login</a>
@@ -20,16 +21,16 @@
 {% for data in Creds %}
 <div class = "myDiv" id = "Dib">
   <ul class="myUL">
-  <li><p style="margin-top: 10px">{{ data.id }}. Description: {{data.Description}}</p></li>
-  <li><p style="padding-left: 15px">Username: {{data.Name}}</p></li>
+  <li><p style="margin-top: 10px">{{ forloop.counter }}. Description: {{data.Desc}}</p></li>
+  <li><p style="padding-left: 15px">Username: {{data.Username}}</p></li>
   <li><p style="padding-left: 15px">Password: {{data.Password}}</p></li>
-  <li><p style="padding-left: 15px">Entry type: {{data.p_type}}</p></li>
+  <li><p style="padding-left: 15px">Entry type: {{data.P_type}}</p></li>
   
   <div class="UD_button">
-      <form action="update/{{ data.id }}">
-        <button style="margin-right: 10px" type="submit" id="{{data.id}}">Update</button>
+      <form action="update/{{ forloop.counter }}">
+        <button style="margin-right: 10px" type="submit" id="{{ forloop.counter }}">Update</button>
       </form>
-      <form action="delete/{{ data.id }}">
+      <form action="delete/{{ forloop.counter }}">
         <button type="submit">Delete</button>
       </form>
     </div>

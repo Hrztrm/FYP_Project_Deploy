@@ -31,7 +31,7 @@
                 <li id="cas" class="invalid">Contains upper and lower case letters</li>
                 <li id="dig" class="invalid">Contains digits</li>
                 <li id="spe" class="invalid">Contains special character</li>
-                <li id="len" class="invalid">Password length greater than 8</li>
+                <li id="len" class="invalid">Password length greater than 8 and less than 16</li>
                 </ul>
             </span>
         </div>
@@ -103,7 +103,7 @@
             spe.classList.add("invalid");
         }
 
-        if(pass_in.value.length >= 8) {  
+        if(pass_in.value.length >= 8 && pass_in.value.length <= 16) {  
             len.classList.remove("invalid");
             len.classList.add("valid");
          } else {

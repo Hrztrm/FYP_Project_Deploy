@@ -8,4 +8,3 @@ class ExtendUser(models.Model):
     
     def __str__(self):
         return self.ver_code
-    
