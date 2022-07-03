@@ -70,7 +70,6 @@ def denc(key, ciphertext, tag, nonce1):
     dec_data = data.decode('UTF-8')
     #Uncomment this when dh siap bgi kan dia jadi array of dicts 
     data = ast.literal_eval(dec_data) #The decoded ciphertext in list form
-    print(dec_data)
     return data
   
 def key_der(password, salt):

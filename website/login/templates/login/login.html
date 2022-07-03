@@ -1,8 +1,13 @@
 {% extends 'login/base.html' %}
 {% block title %}Login page{% endblock %}
 {% block content %}
+{% load static%}
 <div class="box_col">
+    {% if not user.is_authenticated %}
     <strong><p style="text-align: center; margin-bottom: 1.5rem; font-size:1.25rem;">Login !</p></strong>
+    {% else %}
+    <strong><p style="text-align: center; margin-bottom: 1.5rem; font-size:1.25rem;">User Info !</p></strong>
+    {% endif %}
     <div class="box-outer-content">
         <div class="box-inner-content">
             <div class="form-group-message">
@@ -26,11 +31,27 @@
                 <div class="form-group">
                     <label>Verification Code</label>
                     <input type="text" class="form-control" placeholder="Press button below for code" name="code">
-                    <button type="submit" style="padding: .4rem ;margin-top:.40rem" name="R_OTP">Request OTP</button> <!--Adds a button for Requesting OTP-->
+                    
+                    <button type="submit" style="padding: .4rem ;margin-top:.40rem; width:50%" name="R_OTP"> <!--Adds a button for Requesting OTP-->
+                        <div class="button_div">
+                            <img style="width:15%" src="{%static "/icons/password.png"%}"/>
+                            <span style="padding-left:8px; font-size:15px;">Request OTP</span>
+                        </div>
+                    </button> 
                 </div>
                 <div class="Buttons">
-                    <button type="submit" class="btn" name="Register" formnovalidate>Register</button> <!--Adds a button for logging in-->
-                    <button type="submit" class="btn" style="margin-left: 0.5rem;" name="Login">Log in</button> <!--Adds a button for logging in-->
+                    <button type="submit" class="btn" name="Register" formnovalidate> <!--Adds a button for Register-->
+                        <div class="button_div">
+                            <img style="width:15%" src="{%static "/icons/personal.png"%}"/>
+                            <span style="padding-left:8px; font-size:15px;">Register</span>
+                        </div>
+                    </button> 
+                    <button type="submit" class="btn" style="margin-left: 0.5rem;" name="Login">
+                        <div class="button_div">
+                            <img style="width:15%" src="{%static "/icons/log-in.png"%}"/>
+                            <span style="padding-left:8px; font-size:15px;">Log in</span>
+                        </div>
+                    </button> <!--Adds a button for logging in-->
                 </div>
             </form>
 

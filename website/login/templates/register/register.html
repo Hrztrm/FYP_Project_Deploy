@@ -1,7 +1,7 @@
 {% extends 'register/base.html' %}
-{% block title %}Registeration{% endblock %}
+{% block title %}Registeration Page{% endblock %}
 {% block content %}
-
+{% load static %}
 <div class="box_col">
     <strong><p style="text-align: center; margin-bottom: 1.5rem; font-size:1.25rem;">Register !</p></strong>
 <div class="box-outer-content">
@@ -48,9 +48,19 @@
         </div>
         <div class="Buttons">
             <form action="/login">
-                <button type="submit" class="btn"  name="back" formnovalidate>Back</button>
+                <button type="submit" class="btn"  name="back" formnovalidate>
+                    <div class="button_div">
+                        <img style="width:15%" src="{%static "/icons/back-button.png"%}"/>
+                        <span style="padding-left:8px; font-size:15px;">Back</span>
+                    </div>
+                </button>
             </form>
-            <button type="submit" class="btn" style="margin-left: 0.5rem;" value="Register">Register</button>
+            <button type="submit" class="btn" style="margin-left: 0.5rem;" value="Register">
+                <div class="button_div">
+                    <img style="width:15%" src="{%static "/icons/personal.png"%}"/>
+                    <span style="padding-left:8px; font-size:15px;">Register</span>
+                </div>
+            </button>
         </div>
     </form>
 

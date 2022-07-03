@@ -5,16 +5,68 @@
 {% block content %}
 <div class="sidebar">
   {% load static%}
-  <nav>
-  <a onclick="cat_filter(event)" name="All"><img src="{%static "/icons/account.png"%}"/>All Entry</a>
-  <a onclick="cat_filter(event)" name="General">General</a>
-  <a onclick="cat_filter(event)" name="Email">Email</a>
-  <a onclick="cat_filter(event)" name="Login">Login</a>
-  <a onclick="cat_filter(event)" name="Banking">Banking</a>
-  <br><br><br><br><br><br><br><br><br><br><br><br>
-  <a href="/login/">User Info</a>
-  <a href="/login/logout/">Log out</a>
-  </nav>
+  <div name="All" onclick="cat_filter(event)">
+    <a  name="All" class="All">
+      <div class="sidebar_div" name="All">
+        <img src="{%static "/icons/tile.png"%}" name="All"/>
+        <form name="All">All Entry</form>
+      </div>
+    </a>
+  </div>
+
+  <div name="General" onclick="cat_filter(event)">
+    <a name="General" class="General">
+      <div class="sidebar_div" name="General">
+        <img src="{%static "/icons/globe.png"%}" name="General"/>
+        <form name="General">General</form>
+      </div>
+    </a>
+  </div>
+  
+  <div name="Email" onclick="cat_filter(event)">
+    <a name="Email" class="Email">
+      <div class="sidebar_div" name="Email">
+        <img src="{%static "/icons/email.png"%}" name="Email"/>
+        <form name="Email">Email</form>
+      </div>
+    </a>
+  </div>
+
+  <div name="Login" onclick="cat_filter(event)">
+    <a name="Login" class="Login">
+      <div class="sidebar_div" name="Login">
+        <img src="{%static "/icons/login.png"%}" name="Login"/>
+        <form name="Login">Login</form>
+      </div>
+    </a>
+  </div>
+
+  <div name="Banking" onclick="cat_filter(event)">
+    <a name="Banking" class="Banking">
+      <div class="sidebar_div" name="Banking">
+        <img src="{%static "/icons/bank.png"%}" name="Banking"/>
+        <form name="Banking">Banking</form>
+      </div>
+    </a>
+  </div>
+
+  <div style="position: absolute;bottom:0px;">
+
+    <a href="/login/">
+      <div class="sidebar_div">
+        <img src="{%static "/icons/account.png"%}"/>
+        <form style="padding-left:8px">User Info</form>  
+      </div>
+    </a>  
+
+    <a href="/login/logout/">
+      <div class="sidebar_div">
+        <img src="{%static "/icons/logout.png"%}"/>
+        <form style="padding-left:8px">Log out</form>  
+      </div>
+    </a>  
+    
+  </div>
 </div>
 
 <div id = "Diborder_entry">
@@ -40,11 +92,26 @@
 </div>
 <div class="right_column">
 <div class="Search_box">
-  <p>Search</p>
-  <input type="text" id="myInput" onkeyup="filter()" placeholder="Search for Description...">
+  
+  <div style="display:block">
+    <div class="sidebar_div">
+      <img style="width:10%" src="{%static "/icons/search.png"%}"/>
+      <span style="padding-left:8px">Search Entry</span>
+    </div>
+  </div>
+  <div style="padding-top: 10px">
+    <input type="text" id="myInput" onkeyup="filter()" placeholder="Search via Description...">
+  </div>
 </div>
 <!--For this part, make another style that will make it stick to the right of the screen for register. This is for adding new passwords-->
 <div class="new_entry">
+  <div style="display:block; margin-top:15px">
+    <div class="sidebar_div">
+      <img style="width:10%" src="{%static "/icons/add.png"%}"/>
+      <span style="padding-left:8px">Add New Entry</span>
+    </div>
+  </div>
+
   <form method="post">
     {% csrf_token %}
     <p>Description:</p>
@@ -90,7 +157,10 @@
   function cat_filter(e) {
     // Declare variables
     var cat_filter_value, ul, a, i, txtValue, div;
-    cat_filter_value = e.target.name;
+    if (e.target.nodeName === "DIV")
+      cat_filter_value = e.target.parentNode.className;
+    else
+      cat_filter_value = e.target.name;
     div = document.getElementsByClassName('myDiv');
     ul = document.getElementsByClassName("myUL");
     // Loop through all list items, and hide those who don't match the search query

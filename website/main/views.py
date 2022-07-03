@@ -144,16 +144,12 @@ def fpass(request):
         p_ent = request.session['p_entry'] #Because request.session['p_entry'] is only a refrence to the list, as such it iwll save the doc
         p_ent.append(doc)
         request.session['p_entry'] = p_ent
-        print("Added Sucessfully")
-        print(request.session['p_entry'])
-        
     #File Method
     #with open(path, 'r') as f:
     #    data = json.load(f)
     #    return render(request, "fpass/fpass.html", {'Creds':data})
     
     #Uses MongoDB to store the information
-    print("Enter fpass")
     data = request.session['p_entry'] #Getting the entries for the specific user
     
     return render(request, "fpass/fpass.html", {'Creds':data})
@@ -173,13 +169,13 @@ def update(request, id): #Shows the update Page
     
     p_ent = request.session['p_entry']
     det_data = p_ent[id-1]
-    print(det_data)
     return render(request, "fpass/update.html", {'Creds':det_data})
 
 @login_required(login_url="/login")
 def updaterecord(request, id):
     if(request.method=="POST"):
-        
+        if "back" in request.POST:
+            return redirect(fpass)
         #Mongodb method
         #doc = {
         #    "Desc" : request.POST['Description'],
@@ -233,7 +229,6 @@ def delete(request, id):
     p_ent = request.session['p_entry'] #Because request.session['p_entry'] is only a refrence to the list, as such it iwll save the doc
     p_ent.pop(id-1)
     request.session['p_entry'] = p_ent
-    print("Deletion completed")
     return redirect('/pass')
 
 #Function based untuk dptkan info for the username and password of the user
