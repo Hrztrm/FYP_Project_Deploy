@@ -1,0 +1,96 @@
+<html>
+<head>
+    <title>Credits Page</title>
+</head>
+<body>
+    {% load static %}
+    <style>
+        html {
+            min-height:100%;
+            background-color: #ecf0f5;
+            font-size:20px;
+        }
+        
+        .box{
+            display: flex;
+            justify-content: center;
+            margin-top: 3rem;
+        }
+
+        .box_col{
+            position:relative;
+            max-width: 40%;
+            width: 100%;
+        }
+        .box-outer-content {
+            display:block;
+            border: 1px solid gray;
+            position:relative;
+        }
+    
+        .box-inner-content{
+            min-height:1px;
+            padding: 1.25rem;
+        }
+    
+        .Buttons{
+            display:flex;
+            margin-bottom: 0.1rem;
+        }
+
+        .btn{
+            width: 100%;
+            padding: .375rem .75rem;
+        }
+
+        .button_div {
+            display:flex; 
+            width:100%;
+            align-items:center;
+            justify-content:center;
+          }
+
+          a{
+            font-size:20px;
+            display:block;
+          }
+    </style>
+    <div class="box">
+        <div class="box_col">
+            <strong><p style="text-align: center; margin-bottom: 1.5rem; font-size:1.25rem;">Credits !</p></strong>
+            <div class="box-outer-content">
+                <div class="box-inner-content">
+                    <strong><span style="padding-bottom: 1.5rem;">Icons</span></strong>
+                    <a href="https://www.flaticon.com/free-icons/login" title="login icons">Login icons created by Freepik - Flaticon</a>
+                    <a href="https://www.flaticon.com/free-icons/email" title="email icons">Email icons created by Freepik - Flaticon</a>
+                    <a href="https://www.flaticon.com/free-icons/bank" title="bank icons">Bank icons created by Those Icons - Flaticon</a>
+                    <a href="https://www.flaticon.com/free-icons/globe" title="globe icons">Globe icons created by srip - Flaticon</a>
+                    <a href="https://www.flaticon.com/free-icons/search" title="search icons">Search icons created by Smashicons - Flaticon</a>
+                    <a href="https://www.flaticon.com/free-icons/plus" title="plus icons">Plus icons created by dmitri13 - Flaticon</a>
+                    <a href="https://www.flaticon.com/free-icons/logout" title="logout icons">Logout icons created by dmitri13 - Flaticon</a>
+                    <a href="https://www.flaticon.com/free-icons/log-in" title="log in icons">Log in icons created by Aficons studio - Flaticon</a>
+                    <a href="https://www.flaticon.com/free-icons/log-in" title="log in icons">Log in icons created by abyhadesign - Flaticon</a>
+                    <a href="https://www.flaticon.com/free-icons/register" title="register icons">Register icons created by Stockes Design - Flaticon</a>
+                    <a href="https://www.flaticon.com/free-icons/camera-back" title="camera back icons">Camera back icons created by Freepik - Flaticon</a>
+                    <a href="https://www.flaticon.com/free-icons/confirm" title="confirm icons">Confirm icons created by Roundicons - Flaticon</a>
+                    <a href="https://www.flaticon.com/free-icons/tile" title="tile icons">Tile icons created by Becris - Flaticon</a>
+                    <a href="https://www.flaticon.com/free-icons/otp" title="otp icons">Otp icons created by Chanut-is-Industries - Flaticon</a>
+                    <a href="https://www.flaticon.com/free-icons/otp" title="otp icons">Otp icons created by gungyoga04 - Flaticon</a>
+                    <a href="https://www.flaticon.com/free-icons/save" title="save icons">Save icons created by Those Icons - Flaticon</a>
+                
+                    <div class="Buttons" style="margin-top: 10px;">
+                        <form action="/login">
+                            <button type="submit" class="btn"  name="back" formnovalidate>
+                                <div class="button_div">
+                                    <img style="width:5%" src="{%static "/icons/back-button.png"%}"/>
+                                    <span style="padding-left:8px; font-size:15px;">Back</span>
+                                </div>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

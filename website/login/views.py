@@ -92,6 +92,9 @@ def register_pg(request): #Perlukan ui instruction cleanup. Validation for passw
         if User.objects.filter(email=email).exists(): #Duplicate email check
             messages.info(request, 'Email is already taken')
             return render(request, 'register/register.html', {"data":data})
+        if User.objects.filter(username=username).exists(): #Duplicate email check
+            messages.info(request, 'Username is already taken')
+            return render(request, 'register/register.html', {"data":data})
         if password == password2: #Validation checks
             if email.split("@")[0] in username and len(email.split("@")[0]) > 3:
                 messages.info(request, 'Username cannot contain beginning of email')
@@ -147,23 +150,25 @@ def logout_pg(request):
 
 #Verify is unused as of now, because the current verification does not use this
 #Ignore this part of the code. Unused for security reasons
-def verify_pg(request): #The command login is done here. The user model and authentication value is received from the login_pg.
-    username = request.GET.get('username')
-    password = request.GET.get('password')
-    user = authenticate(username=username,password=password)
-    ver_code = sending_mail(user.email)
-    if (request.method=="POST"):
-        Code = request.POST['code']
-        print(Code)
-        ver_code = request.session.get('resp')
-        print(ver_code)
-        if Code == str(ver_code):
-            login(request, user)
-            return redirect('home')
-        else:
-            return render(request, 'verify/verify.html')
-    else:
-        return render(request, 'verify/verify.html')
+#def verify_pg(request): #The command login is done here. The user model and authentication value is received from the login_pg.
+#    username = request.GET.get('username')
+#    password = request.GET.get('password')
+#    user = authenticate(username=username,password=password)
+#    ver_code = sending_mail(user.email)
+#    if (request.method=="POST"):
+#        Code = request.POST['code']
+#        print(Code)
+#        ver_code = request.session.get('resp')
+#        print(ver_code)
+#        if Code == str(ver_code):
+#            login(request, user)
+#            return redirect('home')
+#        else:
+#            return render(request, 'verify/verify.html')
+#    else:
+#        return render(request, 'verify/verify.html')
+
+
     
 def sending_mail(email, ver_code): #SMS style
     send_mail(

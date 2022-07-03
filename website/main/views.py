@@ -231,6 +231,9 @@ def delete(request, id):
     request.session['p_entry'] = p_ent
     return redirect('/pass')
 
+def credit_pg(request):
+    return render(request, 'credit/credit.html')
+
 #Function based untuk dptkan info for the username and password of the user
 #Look into HTTPS for DIgital OCean   for better seucirt
 #Tak buat lgi decrpytion for this
