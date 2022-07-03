@@ -10,13 +10,6 @@
     {% endif %}
     <div class="box-outer-content">
         <div class="box-inner-content">
-            <div class="form-group-message">
-                {% for message in messages %}
-                <div class="alert alert-danger" role="alert">
-                    {{message}}
-                </div>
-                {% endfor %}
-            </div>
             {% if not user.is_authenticated %} <!--Show this page user is not already logged in-->
             <form action="" method="post">
                 {% csrf_token %} <!--Cross Site Reference Token, Used to validate forms. Mandatory for sending data-->

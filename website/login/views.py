@@ -40,7 +40,7 @@ def login_pg(request):
             code = request.POST['code']
             if "R_OTP" in request.POST:
                 ExtendUser.user = user
-                ExtendUser.ver_code = str(random.randint(10000, 99999))
+                ExtendUser.ver_code = str(random.randint(00000, 99999))
                 print(ExtendUser.ver_code) #Can uncomment
                 #sending_mail(user.email, ExtendUser.ver_code) #Uncomment during real deal
                 return render(request, 'login/login.html', {"data":data})
@@ -51,7 +51,6 @@ def login_pg(request):
                     
                     login(request, user)
                     
-                    #Buat decrpytion and set the session with the plaintext
                     data = get_content_by_email(request.user.email)
                     key = key_der(password, data['salt'])
                     p_entry = denc(key, data['ciphertext'], data['tag'], data['nonce'])
@@ -101,7 +100,8 @@ def register_pg(request): #Perlukan ui instruction cleanup. Validation for passw
                 return render(request, 'register/register.html', {"data":data})
             p_err = validation(password)
             if p_err:
-                messages.info(request, p_err)
+                for a in p_err:
+                    messages.info(request, a)
                 return render(request, 'register/register.html', {"data":data})
             #No errors
             try:

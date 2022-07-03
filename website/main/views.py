@@ -237,14 +237,14 @@ def credit_pg(request):
 #Function based untuk dptkan info for the username and password of the user
 #Look into HTTPS for DIgital OCean   for better seucirt
 #Tak buat lgi decrpytion for this
-@api_view(['POST'])
-@authentication_classes([SessionAuthentication, BasicAuthentication])
-@permission_classes([AllowAny])
-def login_api(request, format=None):
-    serializer = serializers.LoginSerializer(data=request.data, context={'request': request })
-    serializer.is_valid(raise_exception=True)
-    user = serializer.validated_data['user']
-    path = Path("main/Pass_Files/" + user.username + ".json")
-    with open(path, 'r+') as f:
-        data = json.load(f)
-    return Response(data)
+#@api_view(['POST'])
+#@authentication_classes([SessionAuthentication, BasicAuthentication])
+#@permission_classes([AllowAny])
+#def login_api(request, format=None):
+#    serializer = serializers.LoginSerializer(data=request.data, context={'request': request })
+#    serializer.is_valid(raise_exception=True)
+#    user = serializer.validated_data['user']
+#    path = Path("main/Pass_Files/" + user.username + ".json")
+#    with open(path, 'r+') as f:
+#        data = json.load(f)
+#    return Response(data)

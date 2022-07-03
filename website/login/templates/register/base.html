@@ -13,21 +13,6 @@
         font-size:20px;
     }
 
-    .err_box{
-        position:absolute;
-        top: 0px;
-        right: 0px;
-        padding: 0;
-        margin: 0;
-        width: 100%;
-        max-width: 30%;
-    }
-    .err_box div{ 
-        background: green;
-        display: inline-block;
-        float: right;
-        margin: 0.5rem;
-    }
     .box{
         display: flex;
         justify-content: center;
@@ -129,21 +114,66 @@
         justify-content:center;
     }
 
+    .err_box_placement{
+        position:absolute;
+        top: 0px;
+        right: 0px;
+        width: 100%;
+        max-width: 30%;
+        height: 100%;
+    }
+
+    .err_flex{
+        display:block;
+        width: 100%;
+    }
+
+    .bar{
+        padding: 10px;
+        margin: 10px;
+        color: #333;
+        background: #fafafa;
+        border: 1px solid #ccc;
+        color: #ba3939;
+        background: #ffe0e0;
+        border: 1px solid #a33a3a;
+        position: relative;
+    }
+
+    i.ico {
+        display: inline-block;
+        width: 20px;
+        text-align: center; 
+        font-style: normal;
+        font-weight: bold;
+    }
+
+    div.close {
+        position: absolute;
+        top: 30%;
+        right: 10px;
+        color: #ba3939;
+        cursor: pointer;
+      }
+
 </style>
 </head>
 <body>
 
-    <div class="box">
-        <div class="err_box">
-            <!--Insert the messages in here-->
-            <div class="form-group-message"> <!--Maybe make this be a popup-->
-                {% for message in messages %}
-                <div class="alert alert-danger" role="alert">
-                <p>    {{message }} </p>
-                </div>
-                {% endfor %}
+    <!-- Error Messages -->
+    {% if messages %}
+    <div class="err_box_placement">
+        <div class="err_flex">
+            {% for message in messages %}
+            <div class="bar">
+                <div class="close" onclick="this.parentElement.remove()">X</div>
+                <i class="ico">&#9888;</i> {{message}}
             </div>
+            {% endfor %}
         </div>
+    </div>
+    {% endif %}
+    <div class="box">
         {% block content %}
         {% endblock %}
     </div>
