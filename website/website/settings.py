@@ -27,7 +27,7 @@ DEBUG = str(os.environ.get('debaug')) == "1"
 
 ALLOWED_HOSTS = []
 if not DEBUG:
-    ALLOWED_HOSTS += os.environ.get('ALLOWED_HOST')
+    ALLOWED_HOSTS = os.environ.get('ALLOWED_HOST').split(' ')
 else:
     ALLOWED_HOSTS=['127.0.0.1']
 

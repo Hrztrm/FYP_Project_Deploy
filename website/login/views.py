@@ -7,9 +7,9 @@ import random
 from django.contrib.auth.models import User
 from django.contrib import messages
 import re
-from config import *
 from utilsa.mongo_tools import *
 import secrets
+import os
 
 def login_pg(request):
     if (request.method=="POST"):
@@ -125,7 +125,7 @@ def sending_mail(email, ver_code):
     send_mail(
     'Verification Code', #Email Header
     str(ver_code), #The email body
-    E_host_user, #Email from
+    os.environ.get('E_host_user'), #Email from
     [email], #Email to the logged in user
     fail_silently=False,
     )
