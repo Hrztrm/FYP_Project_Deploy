@@ -11,8 +11,6 @@ from config import *
 from utilsa.mongo_tools import *
 import secrets
 
-# Create your views here.
-#Current User information is in the request
 def login_pg(request):
     if (request.method=="POST"):
         if "Register" in request.POST:
@@ -22,27 +20,12 @@ def login_pg(request):
         user = authenticate(username=username, password=password)
         data = {"username": username,"password":password}
         if user is not None:
-            #----------------------------- Ignore this part of the code. Unused for security reasons
-            #This is working for 2fa, but feels unsafe, trying to create a better version
-            #This will send users to a 2fa page, where code is sent to email. Then the user will be logged in
-            #username = form.cleaned_data.get('username')
-            #password = form.cleaned_data.get('password')
-            #base_url = reverse('verify')
-            #test = {'username' : username, 'password' : password}
-            #query_string = urlencode(test) #This is VERY UNSAFE, cari cara untuk encrypt kat sikit so at least dia bukan dlm plain
-            #url = '{}?{}'.format(base_url, query_string)
-            #ver_code = sending_mail(user.email)
-            #request.session['resp'] = ver_code
-            #return redirect(url)
-            #-----------------------------------
-            #If I want to do this better, using the session can be easily exploited maybe. Gut feeling says so.
-            #that extends from the user that will store the verification code
             code = request.POST['code']
             if "R_OTP" in request.POST:
                 ExtendUser.user = user
-                ExtendUser.ver_code = str(random.randint(00000, 99999))
+                ExtendUser.ver_code = str(random.randint(10000, 99999))
                 print(ExtendUser.ver_code) #Can uncomment
-                #sending_mail(user.email, ExtendUser.ver_code) #Uncomment during real deal
+                sending_mail(user.email, ExtendUser.ver_code) #Uncomment during real deal
                 return render(request, 'login/login.html', {"data":data})
             elif 'Login' in request.POST:
                 #Succesfful login
@@ -57,6 +40,7 @@ def login_pg(request):
                     request.session['p_entry'] = p_entry
                     request.session['key'] = password
                     return redirect('fpass')
+                
                 elif code == "":
                         messages.info(request, 'Please enter verification code')
                         return render(request, 'login/login.html', {"data":data})
@@ -69,16 +53,7 @@ def login_pg(request):
 
     return render(request, 'login/login.html') #Custom make the login and registeration
 
-def register_pg(request): #Perlukan ui instruction cleanup. Validation for password and Username
-    #if (request.method=="POST"):
-    #    form = UserRegisterForm(request.POST)
-    #    if form.is_valid():
-    #        form.save()
-    #        return redirect('login')
-    #else:
-    #    form = UserRegisterForm()
-    #return render(request, 'register/register.html', {'form': form})
-    #--------------------------------------------------------------------
+def register_pg(request):
     if (request.method=="POST"): #Customized Registeration Page
         if "back" in request.POST:
             return redirect(login_pg)
@@ -121,12 +96,10 @@ def register_pg(request): #Perlukan ui instruction cleanup. Validation for passw
                     "nonce": nonce,
                     "ciphertext": c_text,
                 }
-                insert_doc_db(doc) #For MongoDB
-                user = User.objects.create_user(username=username, password=password, email=email) #No problems with the registration
+                insert_doc_db(doc)
+                user = User.objects.create_user(username=username, password=password, email=email)
                 user.save()
 
-                print("Registeration Completed")
-                #Registration completed
                 return redirect('login')
             except:
                 messages.info(request, "Session Time Out")
@@ -147,30 +120,8 @@ def logout_pg(request):
         request.session.flush()
         logout(request)
     return redirect('login')
-
-#Verify is unused as of now, because the current verification does not use this
-#Ignore this part of the code. Unused for security reasons
-#def verify_pg(request): #The command login is done here. The user model and authentication value is received from the login_pg.
-#    username = request.GET.get('username')
-#    password = request.GET.get('password')
-#    user = authenticate(username=username,password=password)
-#    ver_code = sending_mail(user.email)
-#    if (request.method=="POST"):
-#        Code = request.POST['code']
-#        print(Code)
-#        ver_code = request.session.get('resp')
-#        print(ver_code)
-#        if Code == str(ver_code):
-#            login(request, user)
-#            return redirect('home')
-#        else:
-#            return render(request, 'verify/verify.html')
-#    else:
-#        return render(request, 'verify/verify.html')
-
-
     
-def sending_mail(email, ver_code): #SMS style
+def sending_mail(email, ver_code):
     send_mail(
     'Verification Code', #Email Header
     str(ver_code), #The email body

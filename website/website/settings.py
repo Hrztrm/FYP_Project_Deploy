@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 """
 
 from pathlib import Path
-from config import *
+import os
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -20,13 +20,16 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = s_key
+SECRET_KEY = os.environ.get('s_key')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = str(os.environ.get('debaug')) == "1"
 
 ALLOWED_HOSTS = []
-
+if not DEBUG:
+    ALLOWED_HOSTS += os.environ.get('ALLOWED_HOST')
+else:
+    ALLOWED_HOSTS=['127.0.0.1']
 
 # Application definition
 
@@ -54,6 +57,7 @@ REST_FRAMEWORK = {
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -129,10 +133,11 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
 STATIC_URL = 'static/'
-
+STATIC_ROOT = BASE_DIR / 'staticfiles'
 STATICFILES_DIRS = [
     BASE_DIR / "static",
 ]
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
@@ -140,8 +145,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Bottom of the file
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = E_host #For safety do not directly code this. This is temporary and needs to change
-EMAIL_PORT = E_port
+EMAIL_HOST = os.environ.get('E_host') #For safety do not directly code this. This is temporary and needs to change
+EMAIL_PORT = os.environ.get('E_port')
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = E_host_user
-EMAIL_HOST_PASSWORD = E_host_password
+EMAIL_HOST_USER = os.environ.get('E_host_user')
+EMAIL_HOST_PASSWORD = os.environ.get('E_host_password')

@@ -1,6 +1,6 @@
 import pymongo
-from config import *
+import os
 
-fyp_db = pymongo.MongoClient(con_s).FYP
+fyp_db = pymongo.MongoClient(os.environ.get('con_s')).FYP
 
 print("MongoDB connected")

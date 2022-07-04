@@ -3,6 +3,7 @@
 {% endblock %}
 {% block title %}The Contents{% endblock %}
 {% block content %}
+<div style="margin-top:5rem">
 <div class="sidebar">
   {% load static%}
   <div name="All" onclick="cat_filter(event)">
@@ -103,11 +104,11 @@
     <input type="text" id="myInput" onkeyup="filter()" placeholder="Search via Description...">
   </div>
 </div>
-<!--For this part, make another style that will make it stick to the right of the screen for register. This is for adding new passwords-->
+
 <div class="new_entry">
   <div style="display:block; margin-top:15px">
     <div class="sidebar_div">
-      <img style="width:10%" src="{%static "/icons/add.png"%}"/>
+      <img style="width:10%" src="{%static "icons/add.png"%}"/>
       <span style="padding-left:8px">Add New Entry</span>
     </div>
   </div>
@@ -130,6 +131,7 @@
     <br><br>
     <button type="submit" style="padding: 10px; margin-bottom: 10px"  value="fcreate">Add entry</button>
   </form>
+</div>
 </div>
 </div>
 
@@ -180,5 +182,4 @@
     }
   }
 </script>
-
 {% endblock content%}
