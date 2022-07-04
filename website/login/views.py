@@ -85,7 +85,7 @@ def register_pg(request):
                             "Username": "Example_Username",
                             "Password": "Example_Password",
                             "P_type": "General",
-                            "P_Id": 0}]
+                            "P_Id": 1}]
                 key = key_der(password, salt)
                 c_text, tag, nonce = enc(key, p_input)
                 
